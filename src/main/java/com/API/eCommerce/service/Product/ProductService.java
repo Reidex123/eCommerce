@@ -1,5 +1,7 @@
 package com.API.eCommerce.service.Product;
 
-public class ProductService {
+import com.API.eCommerce.Repository.productRepository;
 
+public class ProductService implements iProductService {
+    productRepository ProductRepository;
 }
