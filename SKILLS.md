@@ -11,13 +11,17 @@ Building a simple eCommerce app using Java Spring
  - Lombok
  - Validation I/O
 
-# Packages=Entity
+# PackagesAndEntities
  - Model: 1. Product
           2. Image
           3. Category
  - Service: - Product: 1. ProductService
                        2. IProductService (Interface)
-            - Image
-            - Category
- - Repository
+            - Image: 1. ImageService
+                     2. iImageService(interface)
+            - Category: 1. CategoryService
+                        2. iCategoryService(interface)
+ - Repository: 1. ProductRepository
+               2. ImageRepository
+               3. CategoryRepository
  - Exceptions
