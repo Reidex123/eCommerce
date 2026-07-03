@@ -59,6 +59,12 @@ public class CategoryService implements iCategoryService {
     }
 
     @Override
-    public void updateCategory(Category category, Long id) {
+    public void updateCategory(Category category, Long id){
+        Category existingCategory = CategoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+
+        existingCategory.setName(category.getName());
+        
+        CategoryRepository.save(existingCategory);
     }
 }
