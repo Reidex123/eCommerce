@@ -7,8 +7,5 @@ import com.API.eCommerce.model.Category;
 public interface  categoryRepository extends JpaRepository<Category, Long> {
 
     Category findByName(String name);
-
-    Category findByCategoryId(Long id);
-
     boolean existsByName(String name);
 }
