@@ -1,69 +1,121 @@
-Building a simple eCommerce app using Java Spring
+# 🛒 eCommerce Backend — Skills & Progress Tracker
 
-# Tools
- - Java 17+
- - Maven (v3.4+)
- - MySQL
+> A personal log of tools, concepts, and architectural patterns applied while building a production-style Spring Boot REST API from scratch.
 
-# Dependencies
- - Spring Web
- - Spring Data JPA
- - MySQL Driver
- - Lombok
- - Validation I/O
- - Spring Boot Actuator
+---
 
-# Concepts Practiced So Far
- - Spring Boot project setup and structure (Maven, starter dependencies)
- - JPA entity modeling and relationships: `@ManyToOne` (Product → Category) and
-   `@OneToMany` with cascading + orphan removal (Product → Image)
- - Reducing boilerplate with Lombok (`@Getter`, `@Setter`, `@Data`,
-   `@AllArgsConstructor`, `@NoArgsConstructor`)
- - Spring Data JPA repositories and derived query methods (`findBy...`, `countBy...`)
- - Layered architecture: model → repository → service, coding service classes
-   against an interface (`iProductService` / `ProductService`)
- - Constructor-based dependency injection (`@RequiredArgsConstructor`)
- - Custom runtime exceptions for domain error handling (`ProductNotFoundException`)
- - Hibernate schema auto-generation from entities (`ddl-auto=update`)
+## 🧰 Tools & Environment
 
-# PackagesAndEntities
+| Tool | Version |
+|---|---|
+| Java | 17+ |
+| Maven | 3.4+ |
+| MySQL | 8.x |
+| Spring Boot | 4.1.0 |
+| IDE | VS Code / IntelliJ IDEA |
 
- - Model:
-   1. Product ✅ implemented
-   2. Image ✅ implemented (entity only)
-   3. Category ✅ implemented (entity only)
+---
 
- - Service:
-   - Product:
-     1. ProductService ✅ implemented
-     2. iProductService (interface) ✅ implemented
-   - Image:
-     1. ImageService ⬜ not started
-     2. iImageService (interface) ⬜ not started
-   - Category:
-     1. CategoryService ⬜ not started
-     2. iCategoryService (interface) ⬜ not started
+## 📦 Dependencies
 
- - Repository:
-   1. productRepository ✅ implemented (Product CRUD + derived queries by
-      category, brand, name, and combinations)
-   2. ImageRepository ⬜ not started
-   3. CategoryRepository ⬜ not started
+| Dependency | Purpose |
+|---|---|
+| `spring-boot-starter-webmvc` | REST controller layer |
+| `spring-boot-starter-data-jpa` | ORM and repository abstraction |
+| `spring-boot-starter-validation` | Bean validation (`@Valid`, `@NotNull`, etc.) |
+| `spring-boot-starter-actuator` | Application health and monitoring |
+| `mysql-connector-j` | MySQL JDBC driver |
+| `lombok` | Boilerplate reduction (getters, constructors, etc.) |
 
- - Exceptions:
-   1. ProductNotFoundException ✅ implemented
-   2. (Image / Category not-found exceptions) ⬜ not started
+---
 
- - Controller: ⬜ not started (no REST endpoints exposed yet — this is the
-   next concept to tackle: `@RestController`, request mapping, and turning
-   exceptions into proper HTTP responses via `@ControllerAdvice`)
+## 🧠 Concepts Mastered
 
-# Next Concepts to Learn / Apply
- - Building REST controllers (`@RestController`, `@RequestMapping`, `@GetMapping`,
-   `@PostMapping`, etc.) to expose ProductService over HTTP
- - Global exception handling with `@ControllerAdvice` / `@ExceptionHandler`
- - DTOs and bean validation (`@Valid`, `spring-boot-starter-validation`) on
-   incoming requests
- - Filling out Image and Category repository/service layers
- - Writing unit and integration tests beyond the default context-load test
- - Securing endpoints (Spring Security) once core CRUD is in place
+### Architecture & Design
+- Layered architecture: **Model → Repository → Service → Controller**
+- Programming to interfaces — separating contract (`iProductService`) from implementation (`ProductService`)
+- DTO pattern — decoupling the persistence model from the API response shape
+- Generic API response wrapper (`ApiResponse { message, data }`) for consistent endpoint responses
+- Duplicate-entry guard logic using `Optional.filter().map().orElseThrow()`
+
+### Spring Boot & JPA
+- Spring Boot project setup and structure via Spring Initializr
+- JPA entity modeling with mapped relationships:
+  - `@ManyToOne` — Product → Category
+  - `@OneToMany` with `CascadeType.ALL` and `orphanRemoval` — Product → Image
+- Spring Data JPA derived query methods (`findBy...`, `countBy...`, `existsBy...`)
+- Hibernate schema auto-generation from entities (`ddl-auto=update`)
+- Constructor-based dependency injection with `@RequiredArgsConstructor`
+
+### REST API Development
+- Building REST controllers with `@RestController`, `@RequestMapping`, `@PostMapping`, `@GetMapping`
+- Path variable and request parameter binding (`@PathVariable`, `@RequestParam`)
+- Multipart file upload handling (`MultipartFile`, `List<MultipartFile>`)
+- Storing binary image data in MySQL as a `Blob` (`@Lob`, `SerialBlob`)
+- Serving file downloads from a REST endpoint (`ByteArrayResource`, `Content-Disposition` header, `MediaType`)
+
+### Exception Handling
+- Custom runtime exceptions for domain-specific error scenarios
+- Multiple exception types for different failure modes (`ProductNotFoundException`, `ResourceNotFoundException`, `AlreadyExistException`)
+
+### Lombok
+- `@Getter`, `@Setter`, `@Data`, `@AllArgsConstructor`, `@NoArgsConstructor`, `@RequiredArgsConstructor`
+
+## 📋 Implementation Status
+
+### Model
+| Class | Status |
+|---|---|
+| `Product` | ✅ Complete |
+| `Category` | ✅ Complete |
+| `Image` | ✅ Complete |
+
+### Repository
+| Class | Status | Notes |
+|---|---|---|
+| `productRepository` | ✅ Complete | CRUD + derived queries by brand, category, name, and combinations |
+| `categoryRepository` | ✅ Complete | `findByName`, `existsByName` |
+| `imageRepository` | ✅ Complete | Standard CRUD |
+
+### Service
+| Class | Status |
+|---|---|
+| `iProductService` + `ProductService` | ✅ Complete |
+| `iCategoryService` + `CategoryService` | ✅ Complete |
+| `iImageService` + `ImageService` | ✅ Complete |
+
+### DTOs / Request / Response
+| Class | Status |
+|---|---|
+| `ImageDTO` | ✅ Complete |
+| `AddProductRequest` | ✅ Complete |
+| `ApiResponse` | ✅ Complete |
+
+### Exceptions
+| Class | Status |
+|---|---|
+| `ProductNotFoundException` | ✅ Complete |
+| `ResourceNotFoundException` | ✅ Complete |
+| `AlreadyExistException` | ✅ Complete |
+
+### Controllers
+| Class | Status | Endpoints |
+|---|---|---|
+| `ImageController` | ✅ Complete | `POST /api/v1/images/upload`, `GET /api/v1/images/image/download/{imageId}` |
+| `ProductController` | 🔧 In Progress | Stub only — no endpoints mapped yet |
+| `CategoryController` | 🔧 In Progress | Stub only — no endpoints mapped yet |
+
+---
+
+## 🎯 Next Concepts to Apply
+
+| Concept | Description |
+|---|---|
+| **REST Controllers** | Wire `ProductController` and `CategoryController` to their service layers with full CRUD endpoints |
+| **Global Exception Handling** | `@ControllerAdvice` + `@ExceptionHandler` to return clean, structured HTTP error responses |
+| **Bean Validation** | Apply `@Valid`, `@NotNull`, `@NotBlank` to incoming request bodies in controllers |
+| **Unit Testing** | Test service logic in isolation using Mockito to mock repositories |
+| **Integration Testing** | Test controller endpoints with `@WebMvcTest` and `MockMvc` |
+| **Spring Security** | Add authentication and authorization once core CRUD is stable |
+
+---
