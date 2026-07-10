@@ -1,3 +1,9 @@
+/**
+ * @author Koketso
+ * @since 2026-07-07
+ * @version 1.0
+ */
+
 package com.API.eCommerce.controller;
 
 import static org.springframework.http.HttpStatus.*;
@@ -50,8 +56,8 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/by/{brand}/{name}")
-    public ResponseEntity<ApiResponse> getProductByBrandAndName(@PathVariable String brand, @PathVariable String name) {
+    @GetMapping("/by/BrandAndName")
+    public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brand, @RequestParam String name) {
         try {
             List<Product> products = productService.getProductByBrandAndName(brand, name);
 
