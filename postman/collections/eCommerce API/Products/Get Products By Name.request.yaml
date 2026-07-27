@@ -1,0 +1,8 @@
+$kind: http-request
+name: Get Products By Name
+method: GET
+url: '{{baseUrl}}{{apiPrefix}}/products/by/:name'
+order: 5000
+pathVariables:
+  - key: name
+    value: Sneakers

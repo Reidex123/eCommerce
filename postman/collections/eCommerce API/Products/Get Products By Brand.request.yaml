@@ -1,0 +1,8 @@
+$kind: http-request
+name: Get Products By Brand
+method: GET
+url: '{{baseUrl}}{{apiPrefix}}/products/by/brand'
+order: 6000
+queryParams:
+  - key: brand
+    value: Nike

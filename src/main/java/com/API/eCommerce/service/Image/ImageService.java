@@ -15,22 +15,24 @@ import java.util.List;
 
 import javax.sql.rowset.serial.SerialBlob;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.API.eCommerce.DTOs.ImageDTO;
 import com.API.eCommerce.Repository.imageRepository;
 import com.API.eCommerce.model.Image;
 import com.API.eCommerce.model.Product;
 import com.API.eCommerce.service.Product.ProductService;
 import com.API.eCommerce.Exceptions.ResourceNotFoundException;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class ImageService implements iImageService {
 
-    private final imageRepository imageRepository;
-    private final ProductService productService;
+    @Autowired
+    private imageRepository ImageRepository;
+    @Autowired
+    private ProductService productService;
 
     /**
      * Retrieves an image by its ID.
@@ -40,7 +42,7 @@ public class ImageService implements iImageService {
      */
     @Override
     public Image getImageById(Long id) throws ResourceNotFoundException{
-        return imageRepository.findById(id)
+        return ImageRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Image not found with id: " + id));
     }
 
@@ -51,7 +53,7 @@ public class ImageService implements iImageService {
      */
     @Override
     public void deleteImageById(Long id) throws ResourceNotFoundException {
-        imageRepository.findById(id).ifPresentOrElse(imageRepository::delete, () -> {
+        ImageRepository.findById(id).ifPresentOrElse(ImageRepository::delete, () -> {
             throw new ResourceNotFoundException("Image not found with id: " + id);
         });
     }
@@ -85,11 +87,11 @@ public class ImageService implements iImageService {
                 String buildDownload = "/api/v1/images/image/download/";
                 String downloadUrl = buildDownload + image.getId();
                 image.setDownloadUrl(downloadUrl);
-                Image savedImage = imageRepository.save(image);
+                Image savedImage = ImageRepository.save(image);
 
                 // Update the download URL with the saved image's ID and save it again
                 savedImage.setDownloadUrl(buildDownload + savedImage.getId());
-                imageRepository.save(savedImage);
+                ImageRepository.save(savedImage);
 
                 // Create an ImageDTO object to return the saved image's details
                 ImageDTO imageDTO = new ImageDTO();
@@ -121,7 +123,7 @@ public class ImageService implements iImageService {
         try {
             image.setFileName(file.getOriginalFilename());
             image.setImage(new SerialBlob(file.getBytes()));
-            imageRepository.save(image);
+            ImageRepository.save(image);
         } catch (IOException e | SQLException e) {
             throw new RuntimeException("Failed to update image", e);
         }

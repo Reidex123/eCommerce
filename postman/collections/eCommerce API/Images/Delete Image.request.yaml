@@ -1,0 +1,8 @@
+$kind: http-request
+name: Delete Image
+method: DELETE
+url: '{{baseUrl}}{{apiPrefix}}/images/image/:imageId/delete'
+order: 4000
+pathVariables:
+  - key: imageId
+    value: '1'

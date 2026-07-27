@@ -1,0 +1,8 @@
+$kind: http-request
+name: Download Image
+method: GET
+url: '{{baseUrl}}{{apiPrefix}}/images/image/download/:imageId'
+order: 2000
+pathVariables:
+  - key: imageId
+    value: '1'

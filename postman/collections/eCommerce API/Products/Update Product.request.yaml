@@ -1,0 +1,24 @@
+$kind: http-request
+name: Update Product
+method: PUT
+url: '{{baseUrl}}{{apiPrefix}}/products/product/update/:id'
+order: 9000
+pathVariables:
+  - key: id
+    value: '1'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Air Max Pro",
+      "brand": "Nike",
+      "price": 149.99,
+      "quantiry": 30,
+      "description": "Updated running shoes",
+      "category": {
+        "name": "Footwear"
+      }
+    }

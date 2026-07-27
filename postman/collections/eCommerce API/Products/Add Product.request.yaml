@@ -1,0 +1,21 @@
+$kind: http-request
+name: Add Product
+method: POST
+url: '{{baseUrl}}{{apiPrefix}}/products/product/add'
+order: 8000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Air Max",
+      "brand": "Nike",
+      "price": 129.99,
+      "quantiry": 50,
+      "description": "Comfortable running shoes",
+      "category": {
+        "name": "Footwear"
+      }
+    }

@@ -8,20 +8,25 @@
 
 package com.API.eCommerce.service.Category;
 
-import com.API.eCommerce.Repository.categoryRepository;
-import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
-import com.API.eCommerce.model.Category;
 import java.util.List;
-import com.API.eCommerce.Exceptions.ResourceNotFoundException;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.API.eCommerce.Exceptions.AlreadyExistException;
+import com.API.eCommerce.Exceptions.ResourceNotFoundException;
+import com.API.eCommerce.Repository.categoryRepository;
+import com.API.eCommerce.model.Category;
 
 @Service
-@RequiredArgsConstructor
 public class CategoryService implements iCategoryService {
 
     private final categoryRepository CategoryRepository;
+
+    public CategoryService(categoryRepository CategoryRepository) {
+        this.CategoryRepository = CategoryRepository;
+    }
 
     /**
      * Retrieves all categories from the repository.

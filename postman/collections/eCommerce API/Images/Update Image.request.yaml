@@ -1,0 +1,8 @@
+$kind: http-request
+name: Update Image
+method: PUT
+url: '{{baseUrl}}{{apiPrefix}}/images/image/:imageId/update'
+order: 3000
+pathVariables:
+  - key: imageId
+    value: '1'

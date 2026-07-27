@@ -1,0 +1,8 @@
+$kind: collection
+name: eCommerce API
+description: Collection for the eCommerce Spring Boot REST API covering Products, Categories, and Images endpoints.
+variables:
+  - key: baseUrl
+    value: 'http://localhost:8080'
+  - key: apiPrefix
+    value: /api/v1

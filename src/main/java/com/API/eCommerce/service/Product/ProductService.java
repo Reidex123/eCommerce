@@ -13,18 +13,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.API.eCommerce.Repository.productRepository;
-import com.API.eCommerce.model.Product;
 import com.API.eCommerce.Exceptions.ProductNotFoundException;
 import com.API.eCommerce.Exceptions.ResourceNotFoundException;
-
-import lombok.RequiredArgsConstructor;
+import com.API.eCommerce.Repository.productRepository;
+import com.API.eCommerce.model.Product;
 
 @Service
-@RequiredArgsConstructor
 public class ProductService implements iProductService {
 
-    private productRepository ProductRepository;
+    private final productRepository ProductRepository;
 
     public ProductService(productRepository ProductRepository) {
         this.ProductRepository = ProductRepository;

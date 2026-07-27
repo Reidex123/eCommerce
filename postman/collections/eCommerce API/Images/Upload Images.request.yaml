@@ -1,0 +1,14 @@
+$kind: http-request
+name: Upload Images
+method: POST
+url: '{{baseUrl}}{{apiPrefix}}/images/upload'
+order: 1000
+queryParams:
+  - key: productId
+    value: '1'
+body:
+  type: formdata
+  content:
+    - key: files
+      type: file
+      src: ''
