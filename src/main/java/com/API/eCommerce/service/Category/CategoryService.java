@@ -22,11 +22,8 @@ import com.API.eCommerce.model.Category;
 @Service
 public class CategoryService implements iCategoryService {
 
-    private final categoryRepository CategoryRepository;
-
-    public CategoryService(categoryRepository CategoryRepository) {
-        this.CategoryRepository = CategoryRepository;
-    }
+    @Autowired
+    private categoryRepository CategoryRepository;
 
     /**
      * Retrieves all categories from the repository.
