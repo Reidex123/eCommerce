@@ -6,7 +6,7 @@ A backend REST API for a simple eCommerce application, built with Spring Boot as
 - **Start date:** 19/06/2026
 - **Purpose:** Understand the fundamentals of Spring Boot and build the ability to structure and scale applications as they grow.
 
-> ⚠️ **Project status: in progress.** The full data and service layers are implemented across all three domains (Product, Category, Image). The Image controller is functional with upload and download endpoints. Product and Category controllers are scaffolded but not yet wired up. See [Roadmap](#roadmap--next-steps) below.
+> ⚠️ **Project status: in progress.** The full data and service layers are implemented across all three domains (Product, Category, Image), and all three controllers (Product, Category, Image) are wired up with mapped endpoints. The API is currently being exercised end-to-end with a Postman collection. Security (authentication/authorization) has not been implemented yet — that's the current edge of the project. See [Roadmap](#roadmap--next-steps) below.
 
 ---
 
@@ -53,8 +53,8 @@ src/main/java/com/API/eCommerce/
 │       └── ImageService.java
 │
 ├── controller/
-│   ├── ProductController.java     ⬜ stub — not yet implemented
-│   ├── CategoryController.java    ⬜ stub — not yet implemented
+│   ├── ProductController.java     ✅ implemented
+│   ├── CategoryController.java    ✅ implemented
 │   └── ImageController.java      ✅ implemented
 │
 ├── DTOs/
@@ -125,16 +125,48 @@ All three service contracts (interface + implementation) are complete:
 
 ### REST API
 
-Base path: `/api/v1` (configured in `application.properties`)
+Base path: `${api.prefix}` (configured in `application.properties`, e.g. `/api/v1`)
 
-The only fully wired controller right now is `ImageController`:
+All three controllers are now wired up:
+
+**Products** (`/products`)
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `POST` | `/api/v1/images/upload` | Upload one or more images for a product (`files` + `productId` as request params) |
-| `GET` | `/api/v1/images/image/download/{imageId}` | Download an image by ID (returns raw binary with correct `Content-Type`) |
+| `GET` | `/AllProduct` | Get all products |
+| `GET` | `/product/{id}` | Get a product by ID |
+| `GET` | `/by/BrandAndName?brand=&name=` | Filter by brand + name |
+| `GET` | `/by/CategoryAndBrand?category=&brand=` | Filter by category + brand |
+| `GET` | `/by/{name}` | Get products by name |
+| `GET` | `/by/brand?brand=` | Get products by brand |
+| `GET` | `/by/{category}` | Get products by category |
+| `POST` | `/product/add` | Add a new product |
+| `PUT` | `/product/update/{id}` | Update a product by ID |
+| `DELETE` | `/product/delete/{id}` | Delete a product by ID |
 
-`ProductController` and `CategoryController` exist as `@RestController` stubs with no mapped endpoints yet.
+**Categories** (`/categories`)
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/all` | Get all categories |
+| `GET` | `/category/{id}` | Get a category by ID |
+| `GET` | `/category/{name}` | Get a category by name |
+| `POST` | `/add` | Add a new category |
+| `PUT` | `/category/update/{id}` | Update a category by ID |
+| `DELETE` | `/category/delete/{name}` | Delete a category by ID |
+
+**Images** (`/images`)
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/upload` | Upload one or more images for a product (`files` + `productId` as request params) |
+| `GET` | `/image/download/{imageId}` | Download an image by ID (returns raw binary with correct `Content-Type`) |
+
+---
+
+## API Testing (Postman)
+
+The `postman/` directory contains a Postman collection (`eCommerce API`) covering Products, Categories, and Images, plus a local environment file (`eCommerce Local.environment.yaml`) and workspace globals. This is the current focus — manually exercising every endpoint above to confirm request/response behavior before moving on to automated tests and security.
 
 ---
 
@@ -171,22 +203,20 @@ The app starts on `http://localhost:8080`. Hibernate will auto-create/update the
 
 ## What's Not Built Yet
 
-- **Product and Category controllers** — stubs exist but no endpoints are mapped yet.
+- **Security (authentication / authorization)** — no Spring Security setup yet. This is the current edge of the project — everything up to this point (data layer, services, all three controllers) is implemented and being verified through Postman first.
 - **Global exception handling** — no `@ControllerAdvice` to turn `ProductNotFoundException`, `ResourceNotFoundException`, and `AlreadyExistException` into clean HTTP error responses.
 - **Request validation** — `spring-boot-starter-validation` is included but `@Valid` annotations aren't applied to controller methods yet.
-- **Authentication / authorization** — no Spring Security setup yet.
-- **Tests** — only the default Spring context-load smoke test exists.
+- **Automated tests** — only the default Spring context-load smoke test exists; endpoint verification is currently manual via the Postman collection.
 
 ---
 
 ## Roadmap / Next Steps
 
-1. Implement `ProductController` — wire `ProductService` to HTTP endpoints (GET all, GET by ID, POST, PUT, DELETE, filter by brand/category).
-2. Implement `CategoryController` — expose Category CRUD over HTTP.
-3. Add `@ControllerAdvice` / `@ExceptionHandler` for consistent error response formatting.
-4. Apply `@Valid` on incoming request bodies in controllers.
-5. Expand test coverage — unit tests for services, integration tests for repositories and controllers.
-6. Add Spring Security once core CRUD is stable.
+1. Finish manually verifying all Product/Category/Image endpoints via the Postman collection.
+2. Add `@ControllerAdvice` / `@ExceptionHandler` for consistent error response formatting.
+3. Apply `@Valid` on incoming request bodies in controllers.
+4. Expand test coverage — unit tests for services, integration tests for repositories and controllers.
+5. Add Spring Security once core CRUD is confirmed stable through testing.
 
 ---
 
