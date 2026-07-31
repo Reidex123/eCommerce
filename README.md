@@ -22,6 +22,7 @@ A backend REST API for a simple eCommerce application, built with Spring Boot as
 - **Lombok** — reduces boilerplate on entity, service, and DTO classes
 - **Maven** — build and dependency management
 - **JUnit 5** — testing (currently default context-load test)
+- **Postman**
 
 ---
 
